@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Skewer — вайбкодер</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add("js")</script>
+<style>
+:root{--bg:#000;--card:#0a0a0d;--fg:#ece8df;--mut:#8d8a82;--line:#1f1e24;--acc:#d9b977;--accd:#a88a4e;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{overflow-x:clip;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.65 Inter,system-ui,sans-serif;overflow-x:clip;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.05;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;margin:0;line-height:1.02;letter-spacing:-.01em}
+em{font-style:italic;color:var(--acc)}
+a{color:inherit;text-decoration:none}
+.mono{font:500 12px "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px;position:relative;z-index:2}
+#bar{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);height:2px;background:var(--acc);transform:scaleX(0);transform-origin:0 50%;z-index:40}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font:600 24px "Cormorant Garamond",serif}.logo i{color:var(--acc)}
+nav{display:flex;gap:22px;align-items:center}nav a{font-size:13px;color:var(--mut)}
+@media(max-width:640px){nav a:not(.nb){display:none}}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border:1px solid var(--acc);background:var(--acc);color:#0a0a0c;font:600 15px Inter,sans-serif;cursor:pointer;border-radius:2px;position:relative;overflow:hidden;transition:transform .2s}
+.btn::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;background:rgba(255,255,255,.45);transform:skewX(-20deg);transition:left .6s}
+.btn:active{transform:scale(.97)}
+.btn.g{background:transparent;color:var(--fg);border-color:var(--line)}
+.btn.s{padding:8px 16px;font-size:13px}
+@media(hover:hover){.btn:hover::after{left:130%}.btn.g:hover{border-color:var(--acc);color:var(--acc)}.row:hover .rn{color:var(--acc)}.row:hover{background:var(--card)}}
+.hero{padding:76px 0 40px}
+.hero h1{font-size:clamp(50px,13vw,112px);margin:22px 0 22px}
+.hero h1 em{display:block;min-height:1.02em}
+.caret{display:inline-block;width:.06em;height:.8em;background:var(--acc);margin-left:.06em;vertical-align:-.05em;animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.lead{max-width:560px;color:var(--mut);font-size:17px;margin:0 0 30px}.lead b{color:var(--fg);font-weight:500}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.mq{border-block:1px solid var(--line);overflow:hidden;white-space:nowrap;padding:14px 0;margin-top:40px}
+.mq div{display:inline-block;animation:mq 28s linear infinite;will-change:transform}
+.mq span{margin:0 22px;font:500 22px "Cormorant Garamond",serif;font-style:italic;color:var(--mut)}.mq b{color:var(--acc);font-weight:500}
+@keyframes mq{to{transform:translateX(-50%)}}
+section{padding:68px 0}
+h2{font-size:clamp(34px,7vw,56px);margin:10px 0 26px}
+.hl{background:linear-gradient(var(--acc),var(--acc)) 0 92%/0 .08em no-repeat;transition:background-size 1s .3s}
+.in .hl{background-size:100% .08em}
+.about{display:grid;gap:34px;grid-template-columns:1.3fr 1fr}
+@media(max-width:780px){.about{grid-template-columns:1fr}}
+.about p{color:var(--mut);margin:0 0 16px;font-size:17px}.about b{color:var(--fg);font-weight:500}
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.nums div{background:var(--bg);padding:20px 14px}
+.nums strong{display:block;font:500 46px "Cormorant Garamond",serif;color:var(--acc);line-height:1}
+.row{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:baseline;padding:22px 12px;border-top:1px solid var(--line);transition:background .25s}
+.row:last-child{border-bottom:1px solid var(--line)}
+.rn{font:500 12px "JetBrains Mono",monospace;color:var(--mut);transition:color .25s}
+.row h3{font-size:30px}.row p{margin:4px 0 0;color:var(--mut);font-size:15px}
+.pr{font:500 13px "JetBrains Mono",monospace;color:var(--acc);white-space:nowrap}
+@media(max-width:560px){.row{grid-template-columns:34px 1fr}.pr{grid-column:2}}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:26px;position:relative}
+.card h3{font-size:28px;margin:12px 0 8px}.card p{margin:0;color:var(--mut);font-size:15px}
+.soon{opacity:.5}
+.lk{display:inline-block;margin-top:16px;color:var(--acc);font-weight:500;font-size:14px;border-bottom:1px solid var(--accd)}
+.trk{height:2px;background:var(--line);margin:8px 0 26px;position:relative}
+.trk i{position:absolute;inset:0;background:var(--acc);transform:scaleX(0);transform-origin:0 50%;transition:transform 1.6s cubic-bezier(.2,.7,.2,1) .2s}
+.in .trk i{transform:scaleX(1)}
+.lv strong{display:block;font:500 64px "Cormorant Garamond",serif;color:var(--acc);line-height:1}
+.lv .mono{display:block;margin-bottom:10px}
+.form{display:grid;gap:14px;grid-template-columns:1.4fr 1fr;align-items:start}
+@media(max-width:860px){.form{grid-template-columns:1fr}}
+@media(min-width:861px){.est{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px)}}
+label{display:block;font-weight:500;font-size:13px;margin:0 0 7px;color:var(--mut)}
+input,select,textarea{width:100%;padding:13px 14px;border-radius:2px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:inherit;font-size:16px}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--acc)}
+textarea{min-height:140px;resize:vertical}
+.f{margin-bottom:16px}.two{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+@media(max-width:560px){.two{grid-template-columns:1fr}}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:center;padding:11px 12px;border:1px solid var(--line);border-radius:2px;cursor:pointer;font-size:14px;margin:0;color:var(--fg)}
+.opt:has(input:checked){border-color:var(--acc);background:rgba(217,185,119,.08)}
+.opt input{width:18px;height:18px;margin:0;accent-color:var(--acc)}
+.price{font:500 clamp(36px,8vw,48px) "Cormorant Garamond",serif;color:var(--acc);line-height:1.05;margin:10px 0}
+.note{color:var(--mut);font-size:13px}
+.msg{margin-top:14px;font-size:14px;min-height:22px}.err{color:#e5736f}.ok{color:#7ec89a}
+.av{width:40px;height:40px;border-radius:50%;border:1px solid var(--acc);background:transparent;color:var(--acc);display:grid;place-items:center;cursor:pointer;font:600 16px Inter,sans-serif;padding:0;margin-left:-8px;transition:transform .2s,background .2s}.av:active{transform:scale(.92)}.av.on{background:var(--acc);color:#0a0a0c}
+.mo{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);display:grid;place-items:center;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px 16px;overflow:auto}.mo[hidden]{display:none}
+.md{position:relative;width:100%;max-width:440px;background:var(--card);border:1px solid var(--line);padding:30px 24px 26px;max-height:calc(100dvh - 40px);overflow:auto}.md h3{font-size:34px;margin:8px 0 0}
+.x{position:absolute;top:6px;right:12px;background:none;border:0;color:var(--mut);font-size:30px;cursor:pointer;line-height:1}
+.tb{display:grid;grid-template-columns:1fr 1fr;margin:20px 0;border:1px solid var(--line)}.tb button{padding:11px;background:none;border:0;color:var(--mut);font:600 14px Inter,sans-serif;cursor:pointer}.tb .on{background:var(--acc);color:#0a0a0c}
+.big{width:64px;height:64px;border-radius:50%;background:var(--acc);color:#0a0a0c;display:grid;place-items:center;font:600 30px "Cormorant Garamond",serif;margin-bottom:12px}
+.sts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}.sts div{border:1px solid var(--line);padding:14px}.sts strong{display:block;font:500 30px "Cormorant Garamond",serif;color:var(--acc);line-height:1.1}
+.od{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 0;border-top:1px solid var(--line);font-size:14px}.od .ch{margin:0}
+.pg{position:fixed;inset:0;z-index:55;background:var(--bg);overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 14px) 0 calc(env(safe-area-inset-bottom,0px) + 40px)}.pg[hidden]{display:none}
+.pgw{max-width:640px;margin:0 auto;padding:0 20px}.pgt{display:flex;justify-content:space-between;margin-bottom:26px}
+.prof{display:flex;gap:18px;align-items:center}.avl{position:relative;cursor:pointer;flex:none;display:block;margin:0}
+.big{width:88px;height:88px;border-radius:50%;background-color:var(--acc);background-size:cover;background-position:center;color:#0a0a0c;display:grid;place-items:center;font:600 40px "Cormorant Garamond",serif;margin:0}
+.cam{position:absolute;right:-2px;bottom:-2px;width:28px;height:28px;border-radius:50%;background:var(--bg);border:1px solid var(--acc);color:var(--acc);display:grid;place-items:center;font-size:14px}
+#cn{font-size:40px;margin:0 0 4px;overflow-wrap:anywhere}.pgw .mono{margin:30px 0 12px}.pgw .sts{margin:22px 0 0}
+.tap{cursor:pointer;transition:border-color .2s}.tap:active{border-color:var(--acc)}.card.tap h3{font-size:32px;margin:10px 0 8px}
+.bars{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:18px 0 6px}.bars i{height:3px;background:var(--line)}.bars i.on{background:var(--acc)}
+.od.tap{padding:14px 4px}
+[hidden]{display:none!important}.lb{font:500 11px "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:0 0 6px}
+footer{padding:36px 0 52px;border-top:1px solid var(--line);color:var(--mut);font-size:13px}
+.js .rv{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}
+.js .rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.js .rv{opacity:1;transform:none}}
+
+.hero{position:relative;isolation:isolate;overflow:clip}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:radial-gradient(ellipse 75% 65% at 50% 30%,#000 25%,transparent 75%);mask-image:radial-gradient(ellipse 75% 65% at 50% 30%,#000 25%,transparent 75%);opacity:.6}
+.aur{position:absolute;z-index:-1;width:90vw;height:90vw;max-width:760px;max-height:760px;left:50%;top:-25%;margin-left:-35%;background:radial-gradient(closest-side,rgba(217,185,119,.17),transparent);animation:dr 14s ease-in-out infinite alternate;will-change:transform}
+@keyframes dr{to{transform:translate3d(12%,10%,0)}}
+.hero h1{font-size:clamp(46px,11vw,92px)}
+.hg{display:grid;gap:46px;grid-template-columns:1.1fr 1fr;align-items:center}
+@media(max-width:860px){.hg{grid-template-columns:1fr}}
+.ocw{position:relative;padding:18px 0}
+.oc{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);padding:22px;border-radius:2px}
+.oc h3{font-size:30px;margin:14px 0 12px}
+.scan{position:absolute;left:0;right:0;top:0;height:60px;background:linear-gradient(transparent,rgba(217,185,119,.14),transparent);animation:sc 4.5s linear infinite;pointer-events:none;will-change:transform}
+@keyframes sc{from{transform:translateY(-100%)}to{transform:translateY(560%)}}
+.oh{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.st{display:inline-flex;align-items:center;gap:8px;font:500 11px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.1em;color:#7ec89a}
+.st i{width:7px;height:7px;border-radius:50%;background:#7ec89a;animation:pu 1.8s infinite}
+.ch{display:inline-block;padding:6px 10px;border:1px solid var(--line);font:500 11px Inter,sans-serif;color:var(--fg);margin:0 6px 6px 0;border-radius:2px}
+.ch.on{border-color:var(--acc);color:var(--acc)}.ch.g{border-color:#2d6b49;color:#7ec89a}
+.stp{position:relative;display:flex;justify-content:space-between;margin:24px 0 20px}
+.ln{position:absolute;left:8px;right:8px;top:7px;height:2px;background:var(--line)}
+.ln i{display:block;height:100%;background:var(--acc);transform-origin:0 50%;transform:scaleX(0);animation:fl 2.6s .4s ease-out forwards}
+@keyframes fl{to{transform:scaleX(.75)}}
+.sp{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;font:500 9px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)}
+.sp b{width:16px;height:16px;border-radius:50%;background:var(--bg);border:2px solid var(--line)}
+.sp.on b{background:var(--acc);border-color:var(--acc)}.sp.on{color:var(--fg)}
+.sp.cur b{animation:pu 1.8s infinite}
+@keyframes pu{0%{box-shadow:0 0 0 0 rgba(217,185,119,.5)}100%{box-shadow:0 0 0 10px rgba(217,185,119,0)}}
+.of{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px}
+.of strong{font:500 34px "Cormorant Garamond",serif;color:var(--acc);line-height:1;margin-right:auto}
+.fc{position:absolute;z-index:3;padding:8px 12px;background:var(--card);border:1px solid var(--line);font:500 11px "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase;animation:fy 5s ease-in-out infinite alternate;will-change:transform}
+.f1{top:0;right:8px}.f2{bottom:0;left:10px;animation-delay:-2s}.f3{top:46%;right:-4px;animation-delay:-3.5s}
+@media(max-width:860px){.f3{display:none}}
+@keyframes fy{to{transform:translateY(-9px)}}
+.mq .ch{margin:0 7px;padding:8px 14px;font:500 12px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);font-style:normal}
+.mq .ch b{color:var(--acc);font-weight:500;margin-left:10px}
+.grid2{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.bb{max-width:90%;padding:12px 14px;margin:12px 0;font-size:14px;line-height:1.5;border-radius:2px;background:#15151a}
+.bb.m{background:rgba(217,185,119,.1);border:1px solid rgba(217,185,119,.35);margin-left:auto}
+.ty{display:flex;gap:5px;width:62px;padding:14px}.ty i{width:6px;height:6px;border-radius:50%;background:var(--acc);animation:tb 1.2s infinite}
+.ty i:nth-child(2){animation-delay:.2s}.ty i:nth-child(3){animation-delay:.4s}
+@keyframes tb{40%{transform:translateY(-5px)}}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}.cols .mono{display:block;margin-bottom:10px}
+.about{grid-template-columns:1fr;max-width:680px}
+</style>
+</head>
+<body>
+<div class="grain"></div><div id="bar"></div>
+<header><div class="wrap"><a class="logo" href="#top">Skewer<i>.</i></a>
+<nav><a href="#about">Обо мне</a><a href="#works">Работы</a><a href="#discounts">Скидки</a><a class="btn s nb" href="#order">Заказать</a><button class="av" id="av" aria-label="Личный кабинет"></button></nav></div></header>
+<main id="top">
+<div class="hero"><i class="aur"></i><div class="wrap hg">
+<div><div class="mono">Иван · вайбкодер · 20 лет</div>
+<h1>Собираю<em><span id="rot">сайты</span><i class="caret"></i></em>вместе с ИИ</h1>
+<p class="lead">Я Иван, он же Skewer. <b>Вайбкодер</b>: превращаю идею в рабочий проект быстро и называю цену до старта.</p>
+<div class="btns"><a class="btn" href="#order">Оставить заявку →</a><a class="btn g" href="#works">Смотреть работы</a></div></div>
+<div class="ocw"><div class="oc"><i class="scan"></i>
+<div class="oh"><span class="mono">заказ · пример</span><span class="st"><i></i>в работе</span></div>
+<h3>Лендинг для кофейни «Зерно»</h3>
+<div><span class="ch">меню</span><span class="ch">запись онлайн</span><span class="ch">адаптив</span></div>
+<div class="stp"><div class="ln"><i></i></div><div class="sp on"><b></b>заявка</div><div class="sp on"><b></b>ТЗ</div><div class="sp on"><b></b>цена</div><div class="sp on cur"><b></b>работа</div><div class="sp"><b></b>сдача</div></div>
+<div class="of"><strong>7 500 ₽</strong><span class="ch g">скидка 5%</span><span class="ch">5 дней</span></div></div>
+<span class="fc f1">ответ в течение дня</span><span class="fc f2">цена до старта</span><span class="fc f3">скидки до 20%</span></div>
+</div>
+<div class="mq"><div id="mq"></div></div></div>
+
+
+<section id="flow"><div class="wrap rv"><div class="mono">01 / Как это работает</div><h2>От заявки до <em class="hl">сдачи</em></h2>
+<div class="grid2"><div class="card"><div class="mono">переписка · пример</div>
+<div class="bb">Нужен лендинг для кофейни: меню, адрес, запись онлайн.</div>
+<div class="bb m">Понял! Сделаю за 5 дней. Ориентир по цене 7 500 ₽, а после отзыва скидка 5% на следующий заказ.</div>
+<div class="bb ty"><i></i><i></i><i></i></div></div>
+<div class="card"><div class="mono">доска заказов · пример</div>
+<div class="cols"><div><span class="mono">заявка</span><span class="ch">Кофейня «Зерно»</span></div><div><span class="mono">в работе</span><span class="ch on">Бот для салона</span></div><div><span class="mono">сдано</span><span class="ch">Бот для отзывов</span></div></div>
+<p class="note" style="margin-top:22px">Каждый шаг согласуем в Telegram: ТЗ, цена, правки, сдача.</p></div></div></div></section>
+<section id="about"><div class="wrap rv"><div class="mono">02 / Обо мне</div><h2>Не код ради кода, а <em class="hl">результат</em></h2>
+<div class="about"><div>
+<p>Меня зовут <b>Иван</b>, мне <b>20 лет</b>. Я недавно пришёл в разработку и уже собираю свою аудиторию.</p>
+<p><b>Вайбкодинг</b> значит, что проект рождается в диалоге с ИИ: я задаю направление, проверяю результат и довожу до рабочего состояния. Так получается быстрее, а вам понятнее по срокам и цене.</p>
+<p>Ник <b>Skewer</b>: под ним меня найдёте в Telegram.</p></div>
+</div></div></section>
+
+<section id="services"><div class="wrap rv"><div class="mono">03 / Услуги</div><h2>Что <em>могу</em> сделать</h2><div id="svc"></div></div></section>
+
+<section id="works"><div class="wrap rv"><div class="mono">04 / Портфолио</div><h2>Мои <em>работы</em></h2><div class="grid" id="pf"><p class="note">Загружаю работы…</p></div>
+<div class="grid" style="margin-top:14px"><div class="card"><div class="mono">Канал</div><h3>Все работы</h3><p>Готовые проекты и процесс создания в Telegram.</p><a class="lk" data-link="portfolio" href="#">Открыть портфолио →</a></div>
+<div class="card"><div class="mono">Отзывы</div><h3>Живые отзывы клиентов</h3><p>Публикуются в канале после проверки, без накруток.</p><a class="lk" data-link="reviews" href="#">Читать отзывы →</a></div></div></div></section>
+
+<section id="discounts"><div class="wrap rv"><div class="mono">05 / Скидки</div><h2>Чем больше заказов, тем <em class="hl">выгоднее</em></h2>
+<p class="lead">Сумма ваших заказов накапливается, и скидка растёт на каждом уровне. Она действует на следующий заказ.</p>
+<div class="trk"><i></i></div>
+<div class="grid">
+<div class="lv"><span class="mono">Уровень 1</span><strong>5%</strong><p class="note">Стартовая скидка после первого заказа и отзыва.</p></div>
+<div class="lv"><span class="mono">Уровень 2</span><strong>10%</strong><p class="note">Когда заказы суммарно на 40 000 ₽.</p></div>
+<div class="lv"><span class="mono">Уровень 3</span><strong>15%</strong><p class="note">Когда заказы суммарно на 80 000 ₽.</p></div>
+<div class="lv"><span class="mono">Уровень 4</span><strong>20%</strong><p class="note">Когда заказы суммарно на 120 000 ₽.</p></div></div></div></section>
+
+<section id="order"><div class="wrap rv"><div class="mono">06 / Заказ</div><h2>Оставьте <em>заявку</em></h2>
+<div class="form"><div class="card">
+<div class="two"><div class="f"><label for="nm">Ваше имя</label><input id="nm" maxlength="60" placeholder="Как к вам обращаться"></div>
+<div class="f"><label for="ct">Telegram, VK или ссылка</label><input id="ct" maxlength="120" placeholder="@username или ссылка"></div></div>
+<div class="two"><div class="f"><label for="tp">Что нужно сделать</label><select id="tp"></select></div>
+<div class="f" id="pgw"><label for="pg">Страниц или разделов</label><input id="pg" type="number" min="1" max="30" value="1"></div></div>
+<div class="two"><div class="f"><label for="ds">Дизайн</label><select id="ds"><option value="1">Готовый шаблон, мои правки</option><option value="1.3">Индивидуальный дизайн</option></select></div>
+<div class="f"><label for="ur">Сроки</label><select id="ur"><option value="1">Обычные (1–2 недели)</option><option value="1.3">Срочно (до 3 дней)</option></select></div></div>
+<input type="hidden" id="dc" value="0"><p class="note" id="dcn" style="margin:0 0 16px"></p>
+<div class="f"><label>Дополнительно</label><div class="opts" id="ft"></div></div>
+<div class="f"><label for="tz">Техническое задание (ТЗ)</label><textarea id="tz" maxlength="3000" placeholder="Что должно быть на сайте или в боте, примеры, пожелания"></textarea></div>
+<div class="f"><label for="rf">Ссылка на ТЗ или примеры (необязательно)</label><input id="rf" maxlength="200" placeholder="https://..."></div>
+<div class="btns"><button class="btn" id="send" type="button">Отправить заявку</button></div>
+<div class="msg" id="msg" role="status"></div></div>
+<div class="card est"><div class="mono">Предварительная оценка</div><div class="price" id="pr">—</div><div class="note" id="dn"></div><p class="note" style="margin-top:14px">Ориентировочный диапазон. Точную цену назову после изучения ТЗ и напишу вам в течение дня.</p></div></div></div></section>
+
+<section><div class="wrap rv"><div class="mono">07 / Контакты</div><h2>Давайте <em>обсудим</em></h2><div class="btns">
+<a class="btn" data-link="tg" href="#">Написать в Telegram</a><a class="btn g" data-link="reviews" href="#">Канал с отзывами</a><a class="btn g" data-link="portfolio" href="#">Портфолио</a></div></div></section>
+</main>
+<footer><div class="wrap">© Иван (Skewer) · вайбкодинг, сайты и Telegram-боты</div></footer>
+<div class="mo" id="acc" hidden><div class="md" role="dialog" aria-modal="true"><button class="x" id="ax" aria-label="Закрыть">×</button>
+<div id="aut"><div class="mono">Личный кабинет</div><h3>Войдите или <em>создайте аккаунт</em></h3>
+<div class="tb"><button id="t1" class="on">Вход</button><button id="t2">Регистрация</button></div>
+<div class="f" id="fnw" hidden><label for="an">Имя</label><input id="an" autocomplete="name"></div>
+<div class="f"><label for="ae">Почта</label><input id="ae" type="email" autocomplete="email"></div>
+<div class="f"><label for="ap">Пароль</label><input id="ap" type="password" autocomplete="current-password"></div>
+<button class="btn" id="ago" style="width:100%;justify-content:center">Войти</button><div class="msg err" id="am"></div>
+<p class="note">В аккаунте сохраняются имя и почта. ТЗ и выбранная услуга не сохраняются.</p></div>
+</div></div>
+
+<div class="pg" id="cabpg" hidden><div class="pgw"><div class="pgt"><button class="btn g s" id="pb">← На сайт</button><button class="btn g s" id="out">Выйти</button></div>
+<div class="prof"><label class="avl" title="Сменить аватарку"><div class="big" id="big"></div><span class="cam">✎</span><input type="file" id="avf" accept="image/*" hidden></label><div><div class="mono" style="margin:0 0 6px">Личный кабинет</div><h2 id="cn"></h2><div class="note" id="ce"></div></div></div>
+<div id="cli"><div class="sts"><div><span class="mono" style="margin:0">Заказов</span><strong id="co">0</strong></div><div><span class="mono" style="margin:0">Сумма трат</span><strong id="cs">0 ₽</strong></div></div>
+<div class="mono">Текущий заказ</div><div id="cur"></div><div class="mono">История заказов</div><div id="cl"></div></div><div id="adm" hidden></div></div></div>
+<div class="mo" id="odm" hidden style="z-index:70"><div class="md"><button class="x" id="odx" aria-label="Закрыть">×</button><div class="mono">Детали заказа</div><h3 id="dt"></h3><div id="db" style="margin-top:14px"></div></div></div>
+<script>
+// ===== НАСТРОЙКИ =====
+const LINKS={tg:"https://t.me/skewerdll",portfolio:"https://t.me/kamidzukiportfolio",reviews:"https://t.me/otzivyvayb"};
+const TG_USER="skewerdll";
+const SHOW_PRICE=true;
+const TYPES={land:{n:"Лендинг или сайт-визитка",d:"Одностраничный сайт с анимацией и формой заявки.",min:5000,max:12000,pg:1},multi:{n:"Многостраничный сайт",d:"Несколько страниц, единый стиль, адаптив.",min:12000,max:28000,pg:4},shop:{n:"Интернет-магазин или каталог",d:"Каталог товаров, корзина, оформление заказа.",min:20000,max:50000,pg:5},bot:{n:"Telegram-бот",d:"Приём заявок, отзывы, рассылки, связь с CRM.",min:5000,max:15000},fix:{n:"Доработка готового сайта",d:"Правки, ускорение, обновление дизайна.",min:1500,max:5000}};
+const PAGE_EXTRA=[1000,2000];
+const FEATS={form:["Форма заявки с отправкой в Telegram",500,1500],anim:["Анимации и эффекты",1000,3000],db:["База данных или личный кабинет",3000,7000],pay:["Онлайн-оплата",4000,9000],adm:["Админ-панель или CRM",6000,15000],txt:["Тексты и контент от меня",1000,3000]};
+// =====================
+const $=id=>document.getElementById(id),fmt=n=>n.toLocaleString("ru-RU")+" ₽",rub=n=>Math.round(n/500)*500;
+document.querySelectorAll("[data-link]").forEach(a=>{const u=LINKS[a.dataset.link];if(u){a.href=u;a.target="_blank";a.rel="noopener"}else{a.style.opacity=".55";a.title="Ссылка скоро появится";a.addEventListener("click",e=>e.preventDefault())}});
+$("tp").innerHTML=Object.entries(TYPES).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join("");
+$("ft").innerHTML=Object.entries(FEATS).map(([k,v])=>`<label class="opt"><input type="checkbox" value="${k}">${v[0]}</label>`).join("");
+$("svc").innerHTML=Object.values(TYPES).map((v,i)=>`<div class="row"><span class="rn">0${i+1}</span><div><h3>${v.n}</h3><p>${v.d}</p></div><span class="pr">от ${fmt(v.min)}</span></div>`).join("");
+$("mq").innerHTML=Object.values(TYPES).map(v=>`<span class="ch">${v.n}<b>от ${fmt(v.min)}</b></span>`).join("").repeat(4);
+function calc(){
+  const t=TYPES[$("tp").value];$("pgw").style.display=t.pg?"":"none";
+  let lo=t.min,hi=t.max;
+  if(t.pg){const ex=Math.max(0,(+$("pg").value||1)-t.pg);lo+=ex*PAGE_EXTRA[0];hi+=ex*PAGE_EXTRA[1]}
+  document.querySelectorAll("#ft input:checked").forEach(c=>{const f=FEATS[c.value];lo+=f[1];hi+=f[2]});
+  const k=(+$("ds").value)*(+$("ur").value),d=+$("dc").value;
+  lo=rub(lo*k*(1-d/100));hi=rub(hi*k*(1-d/100));const mid=rub((lo+hi)/2);
+  $("pr").textContent=SHOW_PRICE?fmt(lo)+" – "+fmt(hi):"Рассчитаю индивидуально";
+  $("dn").textContent=d?"Скидка "+d+"% уже учтена.":"";
+  return{lo,hi,mid,d};
+}
+document.querySelectorAll("select,input").forEach(e=>e.addEventListener("input",calc));calc();
+// ===== клиентская часть с сервером =====
+(function(){
+const SN=["Ожидание подтверждения","Выполнение","Заказ готов и выдан"],SD=["Заявка получена. Я изучу её, подтвержу заказ и свяжусь с вами, чтобы согласовать детали и стоимость.","Заказ подтверждён и в работе. Я делаю проект и держу вас в курсе.","Работа завершена и передана вам. Спасибо, что выбрали меня!"];
+const box=$("acc"),pg=$("cabpg"),odm=$("odm"),ICON='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4.5-6 8-6s7 1.5 8 6"/></svg>';
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const api=async(p,m="GET",b)=>{let r;try{r=await fetch("/api/"+p,{method:m,headers:{"Content-Type":"application/json"},body:b?JSON.stringify(b):undefined})}catch(e){throw new Error("Нет связи с сервером. Попробуйте ещё раз.")}let j={};try{j=await r.json()}catch(e){}if(!r.ok)throw new Error(j.error||"Ошибка сервера");return j};
+const D=x=>new Date(x).toLocaleDateString("ru-RU"),DT=x=>new Date(x).toLocaleString("ru-RU",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}),num=o=>1000+o.id;
+const pic=(n,a)=>{n.style.backgroundImage=a?'url("'+a+'")':""};
+let ME=null,ORD=[],mode=1;
+// ---- заявка ----
+function say(t,ok){const m=$("msg");m.textContent=t;m.className="msg "+(ok?"ok":"err")}
+function check(){if(!$("nm").value.trim()||!$("ct").value.trim()||!$("tz").value.trim()){say("Заполните имя, контакт и ТЗ.",false);return false}return true}
+function brief(){const r=calc(),t=TYPES[$("tp").value],ft=[...document.querySelectorAll("#ft input:checked")].map(c=>FEATS[c.value][0]).join(", ")||"нет";
+ return["Имя в заявке: "+$("nm").value.trim(),"Проект: "+t.n,t.pg?"Страниц или разделов: "+$("pg").value:"","Дизайн: "+$("ds").selectedOptions[0].text,"Сроки: "+$("ur").selectedOptions[0].text,"Скидка клиента: "+r.d+"%","Дополнительно: "+ft,"Оценка калькулятора: "+fmt(r.lo)+" – "+fmt(r.hi),"Ссылка на ТЗ: "+($("rf").value.trim()||"нет"),"ТЗ:",$("tz").value.trim()].filter(x=>x!=="").join("\n")}
+function resetForm(){["ct","tz","rf"].forEach(i=>$(i).value="");$("nm").value=ME&&!ME.admin?ME.name:"";$("tp").selectedIndex=0;$("pg").value=1;$("ds").selectedIndex=0;$("ur").selectedIndex=0;document.querySelectorAll("#ft input").forEach(c=>c.checked=false);calc()}
+$("send").onclick=async()=>{if(!check())return;
+ if(!ME){say("Чтобы оставить заявку, войдите или создайте аккаунт.",false);openAuth();return}
+ if(ME.admin){say("Вы вошли как администратор. Чтобы проверить заказ, войдите как клиент.",false);return}
+ const b=$("send");b.disabled=true;
+ try{await api("orders","POST",{service:TYPES[$("tp").value].n,contact:$("ct").value.trim(),brief:brief()});resetForm();say("Заявка отправлена! Статус заказа смотрите в личном кабинете.",true);ORD=await api("orders");paint()}
+ catch(e){say(e.message,false)}b.disabled=false};
+// ---- скидка считается сама ----
+function calcDisc(){const done=ORD.filter(o=>o.status===2),t=done.reduce((a,o)=>a+(o.sum||0),0),d=t>=120000?20:t>=80000?15:t>=40000?10:done.length?5:0;
+ $("dc").value=d;$("dcn").textContent=ME&&!ME.admin?(d?"Ваша скидка "+d+"% уже учтена в расчёте.":"Скидка появится после первого выполненного заказа."):"Войдите, и скидка будет считаться автоматически.";calc()}
+// ---- вход ----
+function am(t,ok){$("am").textContent=t;$("am").className="msg "+(ok?"ok":"err")}
+function sw(m){mode=m;$("t1").classList.toggle("on",m===1);$("t2").classList.toggle("on",m===2);$("fnw").hidden=m===1;$("ago").textContent=m===1?"Войти":"Создать аккаунт";$("ap").autocomplete=m===1?"current-password":"new-password";am("")}
+function openAuth(){box.hidden=false;document.body.style.overflow="hidden"}
+function shut(){box.hidden=true;document.body.style.overflow=pg.hidden?"":"hidden"}
+function openPage(){paint();pg.hidden=false;pg.scrollTop=0;document.body.style.overflow="hidden"}
+function closePage(){pg.hidden=true;odm.hidden=true;document.body.style.overflow=""}
+$("av").onclick=()=>ME?openPage():openAuth();$("ax").onclick=shut;$("pb").onclick=closePage;$("odx").onclick=()=>odm.hidden=true;
+[box,odm].forEach(m=>m.addEventListener("click",e=>{if(e.target===m){m===box?shut():m.hidden=true}}));
+addEventListener("keydown",e=>{if(e.key!=="Escape")return;if(!odm.hidden)odm.hidden=true;else if(!box.hidden)shut();else if(!pg.hidden)closePage()});
+$("t1").onclick=()=>sw(1);$("t2").onclick=()=>sw(2);
+$("ago").onclick=async()=>{const b=$("ago");b.disabled=true;am("");
+ try{await api(mode===2?"register":"login","POST",{name:$("an").value,email:$("ae").value,password:$("ap").value});$("ap").value="";await load();shut();openPage()}
+ catch(e){am(e.message)}b.disabled=false};
+$("out").onclick=async()=>{try{await api("logout","POST")}catch(e){}ME=null;ORD=[];closePage();resetForm();paint()};
+$("avf").onchange=ev=>{const f=ev.target.files[0];if(!f||!ME||ME.admin)return;const im=new Image(),r=new FileReader();
+ r.onload=()=>{im.onload=async()=>{const c=document.createElement("canvas"),z=200,m=Math.min(im.width,im.height);c.width=c.height=z;c.getContext("2d").drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,z,z);
+  const a=c.toDataURL("image/jpeg",.85);try{await api("avatar","POST",{ava:a});ME.ava=a;paint()}catch(e){alert(e.message)}};im.src=r.result};r.readAsDataURL(f);ev.target.value=""};
+// ---- кабинет клиента ----
+function detail(o){const b=$("db");b.textContent="";$("dt").textContent="Заказ №"+o.n;
+ SN.forEach((n,k)=>{const h=(o.hist||[]).find(x=>x.st===k),r=el("div","od"),a=el("span","",n),d=el("span","note",h?D(h.date):"—");if(h)a.style.color="var(--acc)";r.append(a,d);b.append(r)});
+ const r=el("div","od");r.append(el("span","","Стоимость"),el("span","note",o.sum?fmt(o.sum):"будет названа после подтверждения"));b.append(r);
+ b.append(el("p","note","Дата заявки: "+o.date));odm.hidden=false}
+function paint(){const b=$("av"),ini=ME?(ME.name.trim().charAt(0).toUpperCase()||"•"):"";
+ b.classList.toggle("on",!!ME);pic(b,ME&&ME.ava);if(ME)b.textContent=ME.ava?"":ini;else b.innerHTML=ICON;
+ calcDisc();if(!ME)return;
+ $("cn").textContent=ME.name;$("ce").textContent=ME.email;pic($("big"),ME.ava);$("big").textContent=ME.ava?"":ini;
+ document.querySelector(".cam").hidden=!!ME.admin;$("avf").disabled=!!ME.admin;$("cli").hidden=!!ME.admin;$("adm").hidden=!ME.admin;
+ if(ME.admin)return paintAdmin();
+ const os=ORD.map(o=>({...o,st:o.status,n:num(o),date:D(o.created)}));
+ $("co").textContent=os.length;$("cs").textContent=fmt(os.reduce((a,o)=>a+(o.sum||0),0));
+ const act=os.filter(o=>o.st<2)[0],C=$("cur");C.textContent="";
+ if(act){const d=el("div","card tap");d.append(el("div","mono","Заказ №"+act.n+" · "+act.date),el("h3","",SN[act.st]),el("p","",SD[act.st]));
+  const bs=el("div","bars");[0,1,2].forEach(k=>bs.append(el("i",k<=act.st?"on":"")));d.append(bs,el("span","lk","Подробнее →"));d.onclick=()=>detail(act);C.append(d)}
+ else{const d=el("div","card");d.append(el("p","","Активных заказов нет. Оставьте заявку, и здесь появится её статус."));const q=el("button","btn s","Оставить заявку");q.style.marginTop="16px";q.onclick=()=>{closePage();document.getElementById("order").scrollIntoView({behavior:"smooth"})};d.append(q);C.append(d)}
+ const L=$("cl");L.textContent="";if(!os.length)L.append(el("p","note","История пока пуста."));
+ os.forEach(o=>{const d=el("div","od tap");d.append(el("span","","Заказ №"+o.n+" · "+o.date),el("span","ch"+(o.st===2?" g":" on"),SN[o.st]));d.onclick=()=>detail(o);L.append(d)})}
+// ---- админка ----
+function paintAdmin(){const A=$("adm");A.textContent="";
+ const sts=el("div","sts");sts.style.gridTemplateColumns="repeat(3,1fr)";
+ [["Новые",0],["В работе",1],["Готово",2]].forEach(([l,k])=>{const d=el("div"),m=el("span","lb",l);d.append(m,el("strong","",String(ORD.filter(o=>o.status===k).length)));sts.append(d)});A.append(sts,el("div","mono","Заказы"));
+ if(!ORD.length)A.append(el("p","note","Заказов пока нет."));ORD.forEach(o=>A.append(adminCard(o)))}
+function adminCard(o){const c=el("div","card");c.style.marginBottom="14px";
+ const h=el("div","oh"),n=el("span","lb","Заказ №"+num(o)+" · "+DT(o.created));n.style.margin="0";h.append(n,el("span","ch"+(o.status===2?" g":" on"),SN[o.status]));c.append(h);
+ const nm=el("h3","",o.name);nm.style.cssText="font-size:30px;margin:12px 0 2px";c.append(nm,el("div","note",o.email));
+ const t=el("div");t.style.margin="16px 0";const L=String(o.brief||"").split("\n"),i=L.findIndex(l=>l.startsWith("ТЗ:")),rows=[["Контакт",o.contact],["Услуга",o.service]];
+ (i<0?L:L.slice(0,i)).forEach(l=>{const k=l.indexOf(": ");if(k>0)rows.push([l.slice(0,k),l.slice(k+2)])});
+ rows.forEach(([k,v])=>{if(!v)return;const r=el("div","od"),s=el("span","",v);s.style.cssText="text-align:right;overflow-wrap:anywhere";r.append(el("span","note",k),s);t.append(r)});c.append(t);
+ if(i>=0){c.append(el("div","lb","Техническое задание"));const p=el("div","",L.slice(i+1).join("\n").trim());p.style.cssText="white-space:pre-wrap;overflow-wrap:anywhere;background:var(--bg);border:1px solid var(--line);padding:14px;font-size:15px;margin-bottom:16px";c.append(p)}
+ c.append(el("div","lb","Статус"));const sg=el("div");sg.style.cssText="display:grid;gap:8px;margin-bottom:16px";let st=o.status;
+ const bs=SN.map((x,k)=>{const b=el("button","btn s"+(k===st?"":" g"),x);b.onclick=()=>{st=k;bs.forEach((y,j)=>y.className="btn s"+(j===k?"":" g"))};sg.append(b);return b});c.append(sg,el("div","lb","Стоимость, ₽"));
+ const inp=el("input");inp.type="number";inp.min="0";inp.inputMode="numeric";inp.value=o.sum||"";inp.style.marginBottom="14px";c.append(inp);
+ const sv=el("button","btn","Сохранить"),mg=el("div","msg");
+ sv.onclick=async()=>{sv.disabled=true;try{await api("orders/"+o.id,"PATCH",{status:st,sum:inp.value===""?null:+inp.value});ORD=await api("orders");paintAdmin()}catch(e){mg.textContent=e.message;mg.className="msg err";sv.disabled=false}};
+ c.append(sv,mg);return c}
+// ---- загрузка ----
+async function load(){try{ME=(await api("me")).user}catch(e){ME=null}ORD=[];if(ME){try{ORD=await api("orders")}catch(e){}}paint();if(ME&&!ME.admin&&!$("nm").value.trim())$("nm").value=ME.name}
+fetch("/api/portfolio").then(r=>r.json()).then(list=>{const g=$("pf");g.textContent="";
+ if(!Array.isArray(list)||!list.length){g.append(el("p","note","Скоро здесь появятся проекты."));return}
+ list.forEach(x=>{const c=el("div","card");c.append(el("div","mono",x.lang||"Проект"),el("h3","",String(x.name).replace(/[-_]/g," ")),el("p","",x.description||""));
+  const a=el("a","lk","Открыть →");a.href=/^https:\/\//.test(x.url)?x.url:"#";a.target="_blank";a.rel="noopener";c.append(a);g.append(c)})})
+ .catch(()=>{const g=$("pf");g.textContent="";g.append(el("p","note","Работы не удалось загрузить."))});
+sw(1);load();
+})();
+// живые эффекты
+
+const W=["сайты","лендинги","Telegram-ботов","магазины"];let wi=0,ci=W[0].length,del=false;
+(function type(){const w=W[wi];$("rot").textContent=w.slice(0,ci);let ms=del?45:90;
+  if(!del&&ci===w.length){del=true;ms=1500}else if(del&&ci===0){del=false;wi=(wi+1)%W.length;ms=350}else ci+=del?-1:1;setTimeout(type,ms)})();
+function count(el){const n=+el.dataset.n,s=el.dataset.s||"",t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/1200);el.textContent=Math.round(n*(1-Math.pow(1-p,3)))+s;if(p<1)requestAnimationFrame(f)})(t0)}
+const io="IntersectionObserver"in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");e.target.querySelectorAll("[data-n]").forEach(count);io.unobserve(e.target)}}),{threshold:.12}):null;
+document.querySelectorAll(".rv").forEach(e=>io?io.observe(e):(e.classList.add("in"),e.querySelectorAll("[data-n]").forEach(count)));
+let tk=false;addEventListener("scroll",()=>{if(!tk){tk=true;requestAnimationFrame(()=>{const h=document.documentElement;$("bar").style.transform="scaleX("+Math.min(1,scrollY/Math.max(1,h.scrollHeight-innerHeight))+")";tk=false})}},{passive:true});
+
+(function(){
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;let raf=0;
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  function go(y){cancelAnimationFrame(raf);const y0=scrollY,d=y-y0;if(Math.abs(d)<2)return;
+    if(reduce){scrollTo(0,y);return}
+    const dur=Math.min(1000,420+Math.abs(d)*.16),t0=performance.now();
+    (function f(t){const p=Math.min(1,(t-t0)/dur);scrollTo(0,y0+d*ease(p));if(p<1)raf=requestAnimationFrame(f)})(t0)}
+  ["wheel","touchstart","keydown"].forEach(e=>addEventListener(e,()=>cancelAnimationFrame(raf),{passive:true}));
+  document.addEventListener("click",e=>{
+    const a=e.target.closest('a[href^="#"]');if(!a||a.dataset.link)return;
+    const id=a.getAttribute("href").slice(1);if(!id)return;
+    const el=id==="top"?null:document.getElementById(id);if(id!=="top"&&!el)return;
+    e.preventDefault();
+    const off=parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop)||64;
+    const max=document.documentElement.scrollHeight-innerHeight;
+    const y=el?el.getBoundingClientRect().top+scrollY-off:0;
+    go(Math.max(0,Math.min(y,max)));
+  });
+})();
+
+// плавный подъём «как на лифте»
+(function(){
+  const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;let raf=0;
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  function go(y){cancelAnimationFrame(raf);const y0=scrollY,dy=y-y0;
+    if(reduce||Math.abs(dy)<2){scrollTo(0,y);return}
+    const dur=Math.min(1100,Math.max(550,Math.abs(dy)*.45)),t0=performance.now();
+    (function step(t){const p=Math.min(1,(t-t0)/dur);scrollTo(0,y0+dy*ease(p));if(p<1)raf=requestAnimationFrame(step)})(t0)}
+  ["wheel","touchstart","keydown"].forEach(e=>addEventListener(e,()=>cancelAnimationFrame(raf),{passive:true}));
+  document.addEventListener("click",e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;
+    const id=a.getAttribute("href").slice(1);if(!id||a.dataset.link)return;e.preventDefault();
+    const el=id==="top"?null:document.getElementById(id),hd=document.querySelector("header").offsetHeight;
+    go(Math.max(0,el?el.getBoundingClientRect().top+scrollY-hd-8:0))});
+})();
+</script>
+</body>
+</html>
